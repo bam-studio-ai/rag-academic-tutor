@@ -48,6 +48,7 @@ logs/
 .coverage.*
 .pytest_cache/
 htmlcov/
+test_persist
 
 # Jupyter Notebook
 .ipynb_checkpoints
