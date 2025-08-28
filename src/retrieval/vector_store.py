@@ -2,7 +2,7 @@ import chromadb
 from chromadb.config import Settings
 import logging
 from pathlib import Path
-from typing import Dict, Any
+from typing import Dict, List, Any
 import uuid
 
 logger = logging.getLogger(__name__)
@@ -133,8 +133,43 @@ class VectorStore:
             "total": self.collection.count()
         }
 
+    def search(self, query: str, top_k: int = 5) -> Dict[str, Any]:
+        """Search the vector store for similar documents."""
+        if not query:
+            logger.warning("Empty query provided for search.")
+            return []
+        
+        try:
+            query_embedding = self.embedding_model.encode(query)
+            raw_results = self.collection.query(
+                query_embeddings=[query_embedding],
+                n_results=top_k,
+                include=["metadatas", "documents", "distances"]
+            )
 
+            if raw_results["ids"] and len(raw_results["ids"][0]) > 0:
+                for i in range(len(raw_results["ids"][0])):
+                    result = {
+                        "id": raw_results["ids"][0][i],
+                        "content": raw_results["documents"][0][i],
+                        "metadata": raw_results["metadatas"][0][i],
+                        "score": raw_results["distances"][0][i]
+                    }
+                    results.append(result)
 
+            return {
+                "query": query,
+                "results": results,
+                "total_results": len(results)
+            }
+
+        except Exception as e:
+            logger.error(f"Search failed: {e}")
+            return {
+                "query": query,
+                "results": [],
+                "total_results": 0
+            }
 
 
 

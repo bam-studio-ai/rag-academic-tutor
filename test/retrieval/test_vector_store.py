@@ -35,4 +35,17 @@ class TestVectorStore:
         assert result["added"] == 2
         assert result["failed"] == 0
 
+    def test_search(self, vector_store):
+        query = "test chunk"
+        search = vector_store.search(query, top_k=2)
+        results = search["results"]
+
+        assert isinstance(results, list)
+        assert len(results) <= 2
+        assert search["total_results"] == len(results)
+        for result in results:
+            assert "content" in result
+            assert "metadata" in result
+            assert "score" in result
+
 
