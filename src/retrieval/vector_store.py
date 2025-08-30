@@ -147,6 +147,8 @@ class VectorStore:
                 include=["metadatas", "documents", "distances"]
             )
 
+            results = []
+
             if raw_results["ids"] and len(raw_results["ids"][0]) > 0:
                 for i in range(len(raw_results["ids"][0])):
                     result = {

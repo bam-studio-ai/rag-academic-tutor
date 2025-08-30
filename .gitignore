@@ -52,3 +52,5 @@ test_persist
 
 # Jupyter Notebook
 .ipynb_checkpoints
+
+data
