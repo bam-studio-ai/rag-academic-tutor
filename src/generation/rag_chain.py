@@ -13,9 +13,11 @@ class RAGResponse:
 
 
 class RAGChain:
-    def __init__(self, model_name: str = "mistralai/Mistral-7B-Instruct-v0.3"):
-        self.vector_store = VectorStore(persist_directory="./data/chroma_db",
-                                        collection_name="academic_docs", 
+    def __init__(self, model_name: str = "mistralai/Mistral-7B-Instruct-v0.3",
+                 persist_directory: str = "./data/chroma_db",
+                 collection_name: str = "academic_docs"):
+        self.vector_store = VectorStore(persist_directory=persist_directory,
+                                        collection_name=collection_name, 
                                         embedding_model=EmbeddingModel())
 
         self.llm_client = LLMClient(model_name=model_name)

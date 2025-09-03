@@ -34,4 +34,4 @@ class LLMClient:
             pad_token_id=self.pipe.tokenizer.eos_token_id,
         )
 
-        return response[0]['generated_text'].split('[/INST]')[-1].strip()
+        return response[0]['generated_text'].split('Answer:')[-1].strip()

@@ -3,7 +3,6 @@ from typing import List
 class PromptTemplate:
     @staticmethod
     def generate_prompt(question: str, relevant_docs: List) -> str:
-        prompt = "just a plceholder"
         context = "\n\n".join([doc['content'] for doc in relevant_docs])
         prompt = (
             f"Use the following context to answer the question:\n\n"

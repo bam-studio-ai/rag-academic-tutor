@@ -66,6 +66,17 @@ class VectorStore:
             logger.error(f"Failed to initialize or create collection: {e}")
             raise RuntimeError(f"Collection initialization error: {e}")
 
+    def _reset_collection(self):
+        """Reset the collection by deleting and recreating it."""
+        try:
+            self.client.delete_collection(name=self.collection_name)
+            logger.info(f"Deleted collection: {self.collection_name}")
+            self._init_collection()
+            logger.info(f"Recreated collection: {self.collection_name}")
+        except Exception as e:
+            logger.error(f"Failed to reset collection: {e}")
+            raise RuntimeError(f"Collection reset error: {e}")
+
     def add_documents(self, chunks: list, batch_size: int = 100) -> Dict[str, Any]:
         """Add documents to the vector store in batches."""
         if not chunks:
@@ -172,8 +183,3 @@ class VectorStore:
                 "results": [],
                 "total_results": 0
             }
-
-
-
-
-
