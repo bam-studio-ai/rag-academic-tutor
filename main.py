@@ -8,7 +8,7 @@ if st.session_state.get("rag_chain") is None:
                                       collection_name="aiaa_docs",)
 
 def response_generator(query):
-    response = st.session_state.rag_chain.ask(query)
+    response = st.session_state.rag_chain.ask_hybrid(query)
     yield response.answer
 
 if "messages" not in st.session_state:

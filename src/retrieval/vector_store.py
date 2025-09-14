@@ -77,6 +77,25 @@ class VectorStore:
             logger.error(f"Failed to reset collection: {e}")
             raise RuntimeError(f"Collection reset error: {e}")
 
+    def get_all_documents(self) -> List[Dict[str, Any]]:
+        """Retrieve all documents from the database."""
+        try:
+            # Get all documents in the chromadb collection
+            results = self.collection.get(include=["metadatas", "documents"])
+            documents = []
+            if results["ids"]:
+                for i in range(len(results["ids"])):
+                    documents.append({
+                        "id": results["ids"][i],
+                        "metadata": results["metadatas"][i],
+                        "content": results["documents"][i]
+                    })
+            return documents
+        except Exception as e:
+            logger.error(f"Failed to retrieve documents: {e}")
+            return []
+
+
     def add_documents(self, chunks: list, batch_size: int = 100) -> Dict[str, Any]:
         """Add documents to the vector store in batches."""
         if not chunks:
